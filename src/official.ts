@@ -83,7 +83,7 @@ export function parseOfficial(text: string) {
         const from = classMatch[2];
         const to = classMatch[1];
 
-        mappings.push(from, to);
+        mappings.class(from, to);
 
         currentObfuscated = from;
         currentNamed = to;
@@ -98,7 +98,7 @@ export function parseOfficial(text: string) {
       if (m) {
         const officialMethod = m[3] + "(" + m[4] + ")";
         const obfuscatedMethod = m[5];
-        mappings.push(`${currentObfuscated}.${obfuscatedMethod}`, `${currentNamed}.${officialMethod}`)
+        mappings.method(`${currentObfuscated}.${obfuscatedMethod}`, `${currentNamed}.${officialMethod}`)
       }
     } else {
       const m = line.match(fieldRegex);
@@ -106,7 +106,7 @@ export function parseOfficial(text: string) {
       if (m) {
         const officialField = m[3];
         const obfuscatedField = m[4];
-        mappings.push(`${currentObfuscated}.${obfuscatedField}`, `${currentNamed}.${officialField}`)
+        mappings.field(`${currentObfuscated}.${obfuscatedField}`, `${currentNamed}.${officialField}`)
       }
     }
   }

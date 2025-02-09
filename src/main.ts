@@ -70,33 +70,43 @@ function merge(
 ) {
   let id = 0;
   const mappings: MergedMappings = [];
+  const types = ["class", "method", "field"] as const;
 
-  intermediaryMappings.connection.forEach((intermediary, obfuscated) => {
-    const yarn = yarnMappings.connection.get(intermediary);
-    const type = intermediaryMappings.type.get(obfuscated);
-    const official = officialMappings.connection.get(obfuscated);
-    let officialName = official;
-    let yarnName = yarn;
+  for (const type of types) {
+    intermediaryMappings.get(type).forEach((intermediary, obfuscated) => {
+      const yarn = yarnMappings.get(type).get(intermediary);
+      const official = officialMappings.get(type).get(obfuscated);
+      let officialName = official;
+      let yarnName = yarn;
 
-    if (type === "class") {
-      officialName = official?.split(".").pop();
-      yarnName = yarn?.split(".").pop();
-    }
-    if (type !== "class") {
-      officialName = official?.replace(/\(.*\)/g, "").split(".").slice(-2).join(".");
-      yarnName = yarn?.replace(/\(.*\)/g, "").split(".").slice(-2).join(".");
-    }
+      if (type === "class") {
+        officialName = official?.split(".").pop();
+        yarnName = yarn?.split(".").pop();
+      }
+      if (type !== "class") {
+        officialName = official
+          ?.replace(/\(.*\)/g, "")
+          .split(".")
+          .slice(-2)
+          .join(".");
+        yarnName = yarn
+          ?.replace(/\(.*\)/g, "")
+          .split(".")
+          .slice(-2)
+          .join(".");
+      }
 
-    mappings.push({
-      obfuscated,
-      official,
-      officialName,
-      intermediary,
-      yarn,
-      yarnName,
-      id: id++,
+      mappings.push({
+        obfuscated,
+        official,
+        officialName,
+        intermediary,
+        yarn,
+        yarnName,
+        id: id++,
+      });
     });
-  });
+  }
 
   return mappings;
 }
