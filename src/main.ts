@@ -83,8 +83,8 @@ function merge(
       yarnName = yarn?.split(".").pop();
     }
     if (type !== "class") {
-      officialName = official?.split(".").slice(-2).join(".");
-      yarnName = yarn?.split(".").slice(-2).join(".");
+      officialName = official?.replace(/\(.*\)/g, "").split(".").slice(-2).join(".");
+      yarnName = yarn?.replace(/\(.*\)/g, "").split(".").slice(-2).join(".");
     }
 
     mappings.push({
