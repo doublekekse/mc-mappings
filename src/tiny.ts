@@ -101,10 +101,9 @@ function parseV2(lines: string[]) {
     // CLASS
     if (type === "c" && layer === 0) {
       const [intermediary, named] = rest;
-      mappings.push(
+      mappings.class(
         intermediary.replaceAll("/", "."),
         named.replaceAll("/", "."),
-        "class",
       );
 
       currentNamed = named;
@@ -122,7 +121,11 @@ function parseV2(lines: string[]) {
         .join(".")
         .replaceAll("/", ".");
 
-      mappings.push(pathIntermediary, pathNamed, type === "m" ? "method" : "field");
+      mappings.push(
+        pathIntermediary,
+        pathNamed,
+        type === "m" ? "method" : "field",
+      );
 
       currentNamed = named;
       currentIntermediary = intermediary;
@@ -143,5 +146,5 @@ export function parseMapping(mapping: string) {
     return parseV2(lines);
   }
 
-  throw new Error("Unsupported mappings")
+  throw new Error("Unsupported mappings");
 }
