@@ -112,7 +112,7 @@ function parseV2(lines: string[]) {
     }
     // METHODS and FIELDS
     if (type === "m" || type === "f") {
-      const [descriptor, intermediary, named] = rest;
+      const [_descriptor, intermediary, named] = rest;
       const pathNamed = stackNamed
         .concat([named])
         .join(".")
