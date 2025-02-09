@@ -3,7 +3,7 @@ import {
   getOfficialMappings,
   parseOfficial,
 } from "./official";
-import { Mappings } from "./shared";
+import { Mappings, Type } from "./shared";
 import { getIntermediaryMappings, getYarnMappings, parseMapping } from "./tiny";
 
 const $searchBox = document.getElementById("search") as HTMLInputElement;
@@ -54,6 +54,7 @@ async function load(version: string) {
 }
 
 type MergedMappings = {
+  type: Type;
   obfuscated: string;
   intermediary: string;
   official?: string;
@@ -97,6 +98,7 @@ function merge(
       }
 
       mappings.push({
+        type,
         obfuscated,
         official,
         officialName,
@@ -140,7 +142,11 @@ function render() {
     div.className = "mapping-item";
 
     div.innerHTML = `
-      <div class="name">${elem.officialName} >> ${elem.yarnName}</div>
+      <div>
+        <div class="name">${elem.officialName} >> ${elem.yarnName}  </div>
+        <div class="type type-${elem.type}">${elem.type}</div>
+      </div>
+      
       Official: <code class="official">${elem.official}</code>
       Yarn: <code class="yarn">${elem.yarn}</code>
       Intermediary: <code class="intermediary">${elem.intermediary}</code>
