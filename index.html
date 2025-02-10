@@ -13,6 +13,10 @@
         font-family: Arial, sans-serif;
       }
 
+      :root {
+        min-height: 100%;
+      }
+
       body {
         display: flex;
         flex-direction: column;
@@ -20,6 +24,7 @@
         padding: 2rem;
         background: #121212;
         color: #e0e0e0;
+        min-height: 100vh;
       }
 
       #top-bar {
@@ -56,6 +61,7 @@
         gap: 1rem;
         width: 100%;
         max-width: 600px;
+        flex-grow: 1;
       }
 
       .mapping-item {
@@ -93,6 +99,15 @@
         white-space: pre-wrap;
         font-size: 0.85rem;
       }
+
+      footer {
+        width: 100%;
+        margin-top: 1rem;
+      }
+
+      a, a:visited {
+        color: #46a7ff;
+      }
     </style>
   </head>
   <body>
@@ -102,6 +117,9 @@
       </select>
       </ol>
     </div>
-    <div id="mappings">Loading mappings</div>
+    <main id="mappings">Loading mappings</main>
+    <footer>
+      <a href="//github.com/doublekekse/mc-mappings">Github</a>
+    </footer>
   </body>
 </html>
