@@ -5,6 +5,7 @@ import {
 } from "./official";
 import { Mappings, Type } from "./shared";
 import { getIntermediaryMappings, getYarnMappings, parseMapping } from "./tiny";
+import './assets/main.css';
 
 const $searchBox = document.getElementById("search") as HTMLInputElement;
 const $versionSelect = document.getElementById(
