@@ -1,5 +1,5 @@
 import JSZip from "jszip";
-import { Mappings } from "./shared";
+import { Mappings } from "./mappings";
 
 type MappingId = "yarn" | "intermediary";
 
@@ -109,9 +109,9 @@ function parseV2(lines: string[]) {
       currentNamed = named;
       currentIntermediary = intermediary;
     }
-    // METHODS and FIELDS
+    // METHOD
     if (type === "m" || type === "f") {
-      const [_descriptor, intermediary, named] = rest;
+      const [descriptor, intermediary, named] = rest;
       const pathNamed = stackNamed
         .concat([named])
         .join(".")
@@ -122,7 +122,7 @@ function parseV2(lines: string[]) {
         .replaceAll("/", ".");
 
       mappings.push(
-        pathIntermediary,
+        descriptor + "###" + pathIntermediary,
         pathNamed,
         type === "m" ? "method" : "field",
       );

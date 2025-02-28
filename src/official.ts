@@ -1,4 +1,4 @@
-import { Mappings } from "./shared";
+import { Mappings } from "./mappings";
 
 export type MojangVersion = {
   id: string;
@@ -38,7 +38,9 @@ export async function fetchMojangVersionDetail(
 
 export async function getOfficialMappings(gameVersion: string) {
   const manifest = await fetchMojangVersionManifest();
-  const version = manifest.versions.find(version => version.id === gameVersion)!;
+  const version = manifest.versions.find(
+    (version) => version.id === gameVersion,
+  )!;
   const details = await fetchMojangVersionDetail(version.url);
   return downloadOfficialMappings(details);
 }
@@ -61,8 +63,8 @@ export async function downloadOfficialMappings(
 
 export function parseOfficial(text: string) {
   const lines = text.split("\n");
-  let currentObfuscated: string = '';
-  let currentNamed: string = '';
+  let currentObfuscated: string = "";
+  let currentNamed: string = "";
   const mappings = new Mappings();
 
   const classRegex = /^(\S+)\s+->\s+(\S+):$/;
@@ -92,21 +94,27 @@ export function parseOfficial(text: string) {
     }
     if (line.trim().startsWith("#")) continue;
 
-    // METHOD
     if (line.includes("(") && line.includes(")")) {
       const m = line.match(methodRegex);
+
+      // METHOD
       if (m) {
-        const officialMethod = m[3] + "(" + m[4] + ")";
-        const obfuscatedMethod = m[5];
-        mappings.method(`${currentObfuscated}.${obfuscatedMethod}`, `${currentNamed}.${officialMethod}`)
+        const obfuscatedMethod =
+          m[2] + "::" + m[4] + "###" + currentObfuscated + "." + m[5];
+        const officialMethod = currentNamed + "." + m[3];
+        mappings.method(obfuscatedMethod, officialMethod);
       }
     } else {
       const m = line.match(fieldRegex);
+
       // FIELD
       if (m) {
         const officialField = m[3];
         const obfuscatedField = m[4];
-        mappings.field(`${currentObfuscated}.${obfuscatedField}`, `${currentNamed}.${officialField}`)
+        mappings.field(
+          `${m[2]}###${currentObfuscated}.${obfuscatedField}`,
+          `${currentNamed}.${officialField}`,
+        );
       }
     }
   }

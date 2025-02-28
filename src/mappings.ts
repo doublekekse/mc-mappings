@@ -19,7 +19,11 @@ export class Mappings {
     this.classes.set(from, to);
   }
 
-  get(type: Type) {
+  get(type: Type, descriptor: string, name: string) {
+    return this.getType(type).get(`${descriptor}###${name}`);
+  }
+
+  getType(type: Type) {
     switch (type) {
       case "class":
         return this.classes;
